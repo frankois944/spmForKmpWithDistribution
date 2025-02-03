@@ -12,8 +12,8 @@ The main issue here is that the end user of this library **needs to add KSPlayer
 
 How to Test:
 
-Run on the repository root and run the Gradle task for a local deployment of the library.
+Run on the repository root the Gradle task for a local deployment of the library.
 
 `./gradlew publishToMavenLocal --no-configuration-cache`
 
-Then open with your IDE the Sample directory for testing the library on iOS and Android.
+Then open with your editor the Sample directory for testing the library on iOS and Android.
