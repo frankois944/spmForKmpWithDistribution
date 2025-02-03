@@ -1,8 +1,6 @@
 import Foundation
 
-@_exported import KSPlayer
-@_exported import FFmpegKit
-@_exported import Libavformat
+import KSPlayer
 
 @objcMembers public class MEPlayerController: NSObject {
      private let player = IOSVideoPlayerView()
