@@ -57,8 +57,9 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { target ->
         target.binaries.framework {
+            // dirty solution until I do something cleaner
             // explicitly link dependency framework to the xcFramework
-            // you will find the required library in the check directory of the spmForKmp build directory
+            // you will find the required library in the checkout directory of the spmForKmp build directory
             // library/build/spmKmpPlugin/appleDeps/scratch/checkouts/FFmpegKit/Package.swift
             linkerOpts(
                 getFrameworks("${layout.buildDirectory.asFile.get().path}/spmKmpPlugin/appleDeps/scratch/", target.konanTarget)
