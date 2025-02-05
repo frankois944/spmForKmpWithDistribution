@@ -4,6 +4,7 @@ import io.github.frankois944.spmForKmp.definition.product.ProductName
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
+import org.jetbrains.kotlin.konan.target.KonanTarget
 import java.net.URI
 
 plugins {
@@ -29,12 +30,47 @@ kotlin {
         }
     }
 
+    val xcFramework = XCFramework()
+
+    fun getFrameworks(path: String, target: KonanTarget) : List<String>{
+        val directory = when (target) {
+            KonanTarget.IOS_ARM64 -> "arm64-apple-ios"
+            KonanTarget.IOS_SIMULATOR_ARM64 -> "arm64-apple-ios-simulator"
+            KonanTarget.IOS_X64 -> "x86_64-apple-ios-simulator"
+            else -> ""
+        }
+
+        val buildDir = "$path/$directory/release"
+
+        val frameworks = File(buildDir).listFiles()?.filter { file -> file.name.endsWith(".framework") } ?: emptyList()
+        return buildList {
+            frameworks.forEach { framework ->
+                add("-framework")
+                add(framework.nameWithoutExtension)
+            }
+        } + "-F$buildDir" + "-L$buildDir"
+    }
+
     listOf(
         iosX64(),
         iosArm64(),
         iosSimulatorArm64()
-    ).forEach {
-        it.compilations {
+    ).forEach { target ->
+        target.binaries.framework {
+            // explicitly link dependency framework to the xcFramework
+            // you will find the required library in the check directory of the spmForKmp build directory
+            // library/build/spmKmpPlugin/appleDeps/scratch/checkouts/FFmpegKit/Package.swift
+            linkerOpts(
+                getFrameworks("${layout.buildDirectory.asFile.get().path}/spmKmpPlugin/appleDeps/scratch/", target.konanTarget)
+                        + "-lxml2"
+                        + "-lz"
+                        + "-liconv"
+                        + "-lresolv"
+                        + "-lMoltenVK"
+            )
+            xcFramework.add(this)
+        }
+        target.compilations {
             val main by getting {
                 cinterops.create("appleDeps")
             }
@@ -77,7 +113,7 @@ mavenPublishing {
 
 swiftPackageConfig {
     create("appleDeps") {
-        minIos = "13.0"
+        minIos = "15.0"
         minMacos = "10.15"
         minTvos = "13.0"
         minWatchos = "2.0"
@@ -88,7 +124,7 @@ swiftPackageConfig {
                     add("KSPlayer")
                 },
                 branch = "main"
-            ),
+            )
         )
     }
 }

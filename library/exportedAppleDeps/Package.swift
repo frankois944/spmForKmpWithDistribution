@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "exportedAppleDeps",
-  platforms: [.iOS("13.0"), .macOS("10.15"), .tvOS("13.0"), .watchOS("2.0")],
+  platforms: [.iOS("15.0"), .macOS("10.15"), .tvOS("13.0"), .watchOS("2.0")],
   products: [
     .library(
       name: "exportedAppleDeps",
