@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
   name: "exportedAppleDeps",
-  platforms: [.iOS("15.0"), .macOS("10.15"), .tvOS("13.0"), .watchOS("2.0")],
+  platforms: [.iOS("15.0"), .macOS("10.13"), .tvOS("12.0"), .watchOS("4.0")],
   products: [
     .library(
       name: "exportedAppleDeps",
@@ -19,7 +19,9 @@ let package = Package(
       dependencies: [
         .product(name: "KSPlayer", package: "KSPlayer")
       ],
-      path: "Sources")
+      path: "Sources"
+
+    )
 
   ]
 )
