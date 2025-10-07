@@ -1,7 +1,3 @@
-import com.vanniktech.maven.publish.SonatypeHost
-import io.github.frankois944.spmForKmp.definition.SwiftDependency
-import io.github.frankois944.spmForKmp.definition.product.ProductName
-import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import org.jetbrains.kotlin.konan.target.KonanTarget
@@ -51,10 +47,13 @@ kotlin {
         } + "-F$buildDir" + "-L$buildDir"
     }
 
+
+    val iosArm64 = iosArm64()
+    val iosSimulatorArm64 = iosSimulatorArm64()
     listOf(
-        iosX64(),
-        iosArm64(),
-        iosSimulatorArm64()
+   //     iosX64,
+        iosArm64,
+        iosSimulatorArm64
     ).forEach { target ->
         target.binaries.framework {
             // dirty solution until I do something cleaner

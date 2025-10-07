@@ -29,6 +29,10 @@ import KSPlayer
        player.resetPlayer()
        player.removeFromSuperview()
     }
+
+    public func testAsync() async -> String {
+        return "41"
+    }
 }
 
 extension MEPlayerController: PlayerControllerDelegate {
