@@ -1,66 +1,72 @@
 import Foundation
-
-import KSPlayer
+import Player
 
 @objcMembers public class MEPlayerController: NSObject {
-     private let player = IOSVideoPlayerView()
+     private let player = Player()
 
     override init() {
        super.init()
-       KSOptions.secondPlayerType = KSMEPlayer.self
-       player.delegate = self
-       player.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-       //player.view?.frame = view.bounds
-       player.contentMode = .scaleAspectFill
+        player.playerDelegate = self
+        player.playbackDelegate = self
+        player.view.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        player.view.contentMode = .scaleAspectFill
     }
 
     public func setMediaItem(videoUrl: URL) {
-       player.set(
-          url: videoUrl,
-          options: KSOptions()
-      )
+        player.url = videoUrl
     }
 
     public var playerView: NSObject {
-       player
+       player.view
     }
 
     public func releasePlayer() {
-       player.resetPlayer()
-       player.removeFromSuperview()
-    }
-
-    public func testAsync() async -> String {
-        return "41"
+       player.view.removeFromSuperview()
     }
 }
 
-extension MEPlayerController: PlayerControllerDelegate {
-    public func playerController(state: KSPlayer.KSPlayerState) {
-        print("state \(state)")
+extension MEPlayerController: PlayerPlaybackDelegate {
+
+    public func playerCurrentTimeDidChange(_ player: Player) {
+      //   print("playerCurrentTimeDidChange")
     }
 
-    public func playerController(currentTime: TimeInterval, totalTime: TimeInterval) {
-        print("currentTime \(currentTime) / totalTime \(totalTime)")
+    public func playerPlaybackWillStartFromBeginning(_ player: Player) {
+        print("playerPlaybackWillStartFromBeginning")
     }
 
-    public func playerController(finish error: (any Error)?) {
-        print("finish \(String(describing: error))")
+    public func playerPlaybackDidEnd(_ player: Player) {
+        print("playerPlaybackDidEnd")
     }
 
-    public func playerController(maskShow: Bool) {
-        print("maskShow \(maskShow)")
+    public func playerPlaybackWillLoop(_ player: Player) {
+        print("playerPlaybackWillLoop")
     }
 
-    public func playerController(action: KSPlayer.PlayerButtonType) {
-        print("action \(action)")
+    public func playerPlaybackDidLoop(_ player: Player) {
+        print("playerPlaybackDidLoop")
+    }
+}
+
+extension MEPlayerController: PlayerDelegate {
+
+    public func playerReady(_ player: Player) {
+        print("\(#function) ready")
     }
 
-    public func playerController(bufferedCount: Int, consumeTime: TimeInterval) {
+    public func playerPlaybackStateDidChange(_ player: Player) {
+        print("\(#function) \(player.playbackState.description)")
     }
 
-    public func playerController(seek: TimeInterval) {
-        print("seek \(seek)")
+    public func playerBufferingStateDidChange(_ player: Player) {
+        print("\(#function) \(player.bufferingState.description)")
     }
 
+    public func playerBufferTimeDidChange(_ bufferTime: Double) {
+        print("\(#function) \(bufferTime)")
+    }
+
+    public func player(_ player: Player, didFailWithError error: Error?) {
+        print("\(#function) error.description")
+    }
 }

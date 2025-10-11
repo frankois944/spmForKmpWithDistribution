@@ -116,9 +116,9 @@ swiftPackageConfig {
         minIos = "15.0"
         dependency {
             remotePackageBranch(
-                url = URI("https://github.com/kingslay/KSPlayer"),
+                url = URI("https://github.com/piemonte/Player"),
                 products = {
-                    add("KSPlayer")
+                    add("Player")
                 },
                 branch = "main"
             )
