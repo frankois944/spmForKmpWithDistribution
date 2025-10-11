@@ -5,10 +5,8 @@ This repository shows a way to distribute KMP library for iOS / Android / ... us
 The distributed library contains a compose multiplatform component for iOS and Android, each component has a native video Player.
 
 For each :
-- iOS : [KSPlayer](https://github.com/kingslay/KSPlayer)
+- iOS : [Player](https://github.com/piemonte/Player)
 - Android : [Exoplayer](https://github.com/google/ExoPlayer)
-  
-The main issue here is that the end user of this library **needs to add KSPlayer Swift Package to his Xcode project**, but that's all; it's only used for the linking/resources step of the Apple platform.
 
 How to Test:
 
